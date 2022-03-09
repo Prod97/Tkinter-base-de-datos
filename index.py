@@ -227,18 +227,54 @@ class ventanados():
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("ventana dos")
+        self.root.resizable(False, False)
+        self.frm = tk.Frame(self.root, )
+        self.frm.grid(padx=10, pady=10)
+        self.Pantalla_principal()
+
+    def Pantalla_principal(self):
+        #Name
+        tk.Label(self.frm, text="Name:", font=("Space mono", 15)).grid(column=0, row=0, pady=5)
+        tk.Entry(self.frm, font=("Space mono", 12), relief="flat").grid(
+            column=1, columnspan=2, row=0, sticky="we", pady=5)
+
+        #Last name
+        tk.Label(self.frm, text="Last name:", font=("Space mono", 15)).grid(column=0, row=1, pady=5)
+        tk.Entry(self.frm, font=("Space mono", 12), relief="flat").grid(
+            column=1, columnspan=2, sticky="we", row=1, pady=5)
+
+        #Dui
+        tk.Label(self.frm, text="Dui:", font=("Space mono", 15)).grid(column=0, row=2, pady=5)
+        tk.Entry(self.frm, font=("Space mono", 12), relief="flat").grid(
+            column=1, row=2, columnspan=2, sticky="we", pady=5)
+
+        #Number phone
+        tk.Label(self.frm, text="Number phone:", font=("Space mono", 15)).grid(column=0, row=3, pady=5)
+        tk.Entry(self.frm, font=("Space mono", 12), relief="flat").grid(
+            column=1, row=3, columnspan=2, sticky="we", pady=5)
+
+        #Correo
+        tk.Label(self.frm, text="Email:", font=("Space mono", 15)).grid(column=0, row=4, pady=5)
+        tk.Entry(self.frm, font=("Space mono", 12), relief="flat").grid(
+            column=1, row=4, columnspan=2, sticky="we", pady=5)
+
+        #Butones
+
+        #Button cancel
+        tk.Button(self.frm, text="Cancel", font=("Space mono", 12), cursor="hand2"
+                ).grid(column=0, row=5, columnspan=1, sticky="we")
+
+        #Button edit
+        tk.Button(self.frm, text="Edit", font=("Space mono", 12), cursor="hand2",
+                width=12).grid(column=1, row=5, columnspan=1, sticky="we", padx=15, pady=40)
+
+        #Button save
+        tk.Button(self.frm, text="Save", font=("Space mono", 12), cursor="hand2",
+                width=10, relief="flat", bg="#008FE4",fg="white"
+                ).grid(column=2, row=5, columnspan=1, sticky="we")
+
+
         self.root.mainloop()
-
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
-    application = Program()
+    # application = Program()
+    app = ventanados()
