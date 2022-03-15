@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import subprocess
 import os
 import json
 import random
@@ -225,44 +226,96 @@ Password: {password}
         
 class ventanados():
     def __init__(self):
+        #root
         self.root = tk.Tk()
         self.root.title("ventana dos")
         self.root.resizable(False, False)
+        #Frame
         self.frm = tk.Frame(self.root, )
         self.frm.grid(padx=10, pady=10)
+        #Variables
+        self.name = tk.StringVar()
+        self.last_name = tk.StringVar()
+        self.dui = tk.StringVar()
+        self.number_phone = tk.StringVar()
+        self.email = tk.StringVar()
+        #Table
+        self.tabla_datos()
+        #Menubar
+        self.Bar_menu()
+        #Principal
         self.Pantalla_principal()
 
+        
+    #Funcion para abrir la terminal
+    def terminal(self):
+        return subprocess.call("xfce4-terminal")
+
+    #ID
+    def __id(self):
+        numbers = "1234567890"
+        letter = "poiuytrewqasdfghjklmnbvcxz"
+        letter_up = letter.upper()
+        all = numbers+letter+letter_up
+        new_id = "".join(random.sample(all, 8))
+        return new_id
+
+
+    #Barra de menu con multiples opciones
+    def Bar_menu(self):
+        menubar = tk.Menu(self.root)
+
+        #Opcion
+        option = tk.Menu(menubar, tearoff=False)
+        option.add_command(label="Option", font=("Space mono", 11))
+        option.add_command(label="Editar", font=("Space mono", 11))
+        option.add_command(label="Exit", font=("Space mono", 11), command=self.root.destroy)
+
+        #Terminal
+        terminal = tk.Menu(menubar, tearoff=False)
+        terminal.add_command(label="Nueva terminal", font=("Space mono", 11),
+                            command=self.terminal)
+        
+        #Agregando terminal en barra
+        menubar.add_cascade(label="File", menu=option, font=("Space mono", 13))
+
+        #Agregando opcion en la barra
+        menubar.add_cascade(label="Terminal", menu=terminal, font=("Space mono", 13))
+        self.root.config(menu=menubar)
+
+    
+    #Pantalla principal
     def Pantalla_principal(self):
         #Name
         tk.Label(self.frm, text="Name:", font=("Space mono", 15)).grid(column=0, row=0, pady=5)
-        tk.Entry(self.frm, font=("Space mono", 12), relief="flat").grid(
+        tk.Entry(self.frm, font=("Space mono", 12), relief="flat", width=60, textvariable=self.name).grid(
             column=1, columnspan=2, row=0, sticky="we", pady=5)
 
         #Last name
         tk.Label(self.frm, text="Last name:", font=("Space mono", 15)).grid(column=0, row=1, pady=5)
-        tk.Entry(self.frm, font=("Space mono", 12), relief="flat").grid(
+        tk.Entry(self.frm, font=("Space mono", 12), relief="flat", textvariable=self.last_name).grid(
             column=1, columnspan=2, sticky="we", row=1, pady=5)
 
         #Dui
         tk.Label(self.frm, text="Dui:", font=("Space mono", 15)).grid(column=0, row=2, pady=5)
-        tk.Entry(self.frm, font=("Space mono", 12), relief="flat").grid(
+        tk.Entry(self.frm, font=("Space mono", 12), relief="flat", textvariable=self.dui).grid(
             column=1, row=2, columnspan=2, sticky="we", pady=5)
 
         #Number phone
         tk.Label(self.frm, text="Number phone:", font=("Space mono", 15)).grid(column=0, row=3, pady=5)
-        tk.Entry(self.frm, font=("Space mono", 12), relief="flat").grid(
+        tk.Entry(self.frm, font=("Space mono", 12), relief="flat", textvariable=self.number_phone).grid(
             column=1, row=3, columnspan=2, sticky="we", pady=5)
 
         #Correo
         tk.Label(self.frm, text="Email:", font=("Space mono", 15)).grid(column=0, row=4, pady=5)
-        tk.Entry(self.frm, font=("Space mono", 12), relief="flat").grid(
+        tk.Entry(self.frm, font=("Space mono", 12), relief="flat", textvariable=self.email).grid(
             column=1, row=4, columnspan=2, sticky="we", pady=5)
 
-        #Butones
+        #Botones
 
         #Button cancel
-        tk.Button(self.frm, text="Cancel", font=("Space mono", 12), cursor="hand2"
-                ).grid(column=0, row=5, columnspan=1, sticky="we")
+        tk.Button(self.frm, text="Cancel", font=("Space mono", 12), cursor="hand2",
+                width=11).grid(column=0, row=5, columnspan=1, sticky="we")
 
         #Button edit
         tk.Button(self.frm, text="Edit", font=("Space mono", 12), cursor="hand2",
@@ -270,11 +323,109 @@ class ventanados():
 
         #Button save
         tk.Button(self.frm, text="Save", font=("Space mono", 12), cursor="hand2",
-                width=10, relief="flat", bg="#008FE4",fg="white"
+                width=10, relief="flat", bg="#008FE4",fg="white", command=self.Save_Registro
                 ).grid(column=2, row=5, columnspan=1, sticky="we")
 
-
         self.root.mainloop()
+
+    def Save_Registro(self):
+        datos = {}
+        verificacion = os.path.exists("Base_User.json")
+        name = self.name.get()
+        last_name = self.last_name.get()
+        dui = self.dui.get()
+        number_phone = self.number_phone.get()
+        email = self.email.get()
+
+        if len(name) == 0:
+            messagebox.showinfo(message="Falta rellenar el campo de nombre")
+        elif len(last_name) == 0:
+            messagebox.showinfo(message="Falta rellenar el campo de apellido")
+        elif len(dui) == 0:
+            messagebox.showinfo(message="Falta rellenar el campo de dui")
+        elif len(number_phone) == 0:
+            messagebox.showinfo(message="Falta rellenar el campo de telefono")
+        elif len(email) == 0:
+            messagebox.showinfo(message="Falta rellenar el campo de email")
+        else:
+            dui = [f for f in dui]
+            dui.insert(8, "-")
+            dui = "".join(dui)
+
+            #Creacion de base de datos si ya existe al menos uno
+            if verificacion:
+                with open("Base_User.json") as file:
+                    var1 = json.load(file)
+                    var1[self.__id()] = {
+                        "Name":name.title(),
+                        "Last_name":last_name.title(),
+                        "Dui":dui,
+                        "Number_phone":number_phone,
+                        "Email":email}
+                    with open("Base_User.json", "w") as write:
+                        json.dump(var1, write, indent=4)
+                    self.name.set("")
+                    self.last_name.set("")
+                    self.dui.set("")
+                    self.number_phone.set("")
+                    self.email.set("")
+
+                        
+            #Creando base de datos si el archivo no existe
+            else:
+                datos.setdefault(self.__id(), {
+                    "Name":name.title(),
+                    "Last_name": last_name.title(),
+                    "Dui":dui,
+                    "Number_phone":number_phone,
+                    "Email":email})
+                with open("Base_User.json", "w") as file:
+                    json.dump(datos, file, indent=4)
+                self.name.set("")
+                self.last_name.set("")
+                self.dui.set("")
+                self.number_phone.set("")
+                self.email.set("")
+
+            
+                
+            
+
+
+    #Tabla de datos
+    def tabla_datos(self):
+            
+        #Agregando campos a mostrar
+        self.table = ttk.Treeview(self.frm,
+        column=("Name", "Last_name", "Dui", "Number_phone","Email"))
+        self.table.grid(column=0, row=6, columnspan=3, sticky="we")
+        self.table.heading("#0", text="ID")
+        self.table.heading("#1", text="Name")
+        self.table.heading("#2", text="Last_name")
+        self.table.heading("#3", text="Dui")
+        self.table.heading("#4", text="Number_phone")
+        self.table.heading("#5", text="Email")
+
+        #Leyendo base de datos
+        verificacion = os.path.exists("Base_User.json")
+        if verificacion:
+            with open("Base_User.json") as file:
+                var1 = json.load(file)
+                i = 0
+                for key, value in var1.items():
+                    for i in str(len(var1)):
+                        i = i
+                        self.table.insert("", i, text=f"{key}", values=(value["Name"], value["Last_name"],
+                                                                        value["Dui"], value["Number_phone"],
+                                                                        value["Email"]))
+        else:
+             self.table.insert("", 0, text="No hay nada")   
+
+        tk.Button(self.frm, text="Eliminar")
+            
+
+
+
 if __name__ == '__main__':
     # application = Program()
     app = ventanados()
