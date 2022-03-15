@@ -327,8 +327,10 @@ class ventanados():
                 ).grid(column=2, row=5, columnspan=1, sticky="we")
 
         self.root.mainloop()
-
+        
+    #Guardando todo el registro del formulario
     def Save_Registro(self):
+
         datos = {}
         verificacion = os.path.exists("Base_User.json")
         name = self.name.get()
@@ -369,6 +371,7 @@ class ventanados():
                     self.dui.set("")
                     self.number_phone.set("")
                     self.email.set("")
+                    self.option = True
 
                         
             #Creando base de datos si el archivo no existe
@@ -386,11 +389,8 @@ class ventanados():
                 self.dui.set("")
                 self.number_phone.set("")
                 self.email.set("")
-
-            
-                
-            
-
+                self.option = True
+        
 
     #Tabla de datos
     def tabla_datos(self):
@@ -421,7 +421,10 @@ class ventanados():
         else:
              self.table.insert("", 0, text="No hay nada")   
 
-        tk.Button(self.frm, text="Eliminar")
+        #Agregando boton de eliminar
+        tk.Button(self.frm, text="Eliminar", font=("Space mono", 12), cursor="hand2",
+                  width=10, relief="flat", bg="#FF0E0E", fg="white"
+                ).grid(column=0,row=7, columnspan=1, sticky="we")
             
 
 
