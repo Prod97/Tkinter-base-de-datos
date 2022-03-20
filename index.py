@@ -6,6 +6,7 @@ import json
 import random
 from tkinter import messagebox
 from tkinter import PhotoImage
+from model.datos import *
 
 
 class Program():
@@ -268,7 +269,8 @@ class ventanados():
         #Opcion
         option = tk.Menu(menubar, tearoff=False)
         option.add_command(label="Option", font=("Space mono", 11))
-        option.add_command(label="Editar", font=("Space mono", 11))
+        option.add_command(label="Crear", font=("Space mono", 11), command=crear_tabla)
+        option.add_command(label="Eliminar", font=("Space mono", 11), command=borrar_tabla)
         option.add_command(label="Exit", font=("Space mono", 11), command=self.root.destroy)
 
         #Terminal
